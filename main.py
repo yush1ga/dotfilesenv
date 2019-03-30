@@ -125,9 +125,9 @@ def delete(name):
     print(f'{GREEN}Success!{END}')
 
 
-@cmd.command(help='link settings')
+@cmd.command(help='restore settings from .dotfilesenv')
 @click.argument('name', required=False)
-def link(name):
+def restore(name):
     print(f'{GREEN}{name}{END}')
     sys.stderr.write(f'{RED}Sorry! This API has not been implemented yet!{END}\n')
 
