@@ -27,7 +27,7 @@ def get_setting() -> Dict:
 
 def put_setting(setting) -> None:
     with open(os.path.join(DOTFILESENV_PATH, SETTING), 'w') as f:
-        json.dump(setting, f)
+        json.dump(setting, f, indent=4)
 
 
 @click.group(invoke_without_command=True)
@@ -97,8 +97,32 @@ def list():
 @cmd.command(help='delete a setting')
 @click.argument('name', required=True)
 def delete(name):
-    print(f'{GREEN}{name}{END}')
-    sys.stderr.write(f'{RED}Sorry! This API has not been implemented yet!{END}\n')
+    setting = get_setting()
+    path: str = setting.get(name)
+
+    # validation
+    if path is None:
+        sys.stderr.write(f'{RED}No such setting: {name}{END}\n')
+        exit(1)
+    path = path.replace('~', os.environ.get('HOME'))
+
+    if not os.path.islink(path):
+        sys.stderr.write(f'{RED}{path} is not symbolic link!{END}\n')
+        exit(1)
+
+    # remove symlink
+    os.remove(path)
+
+    # move file
+    shutil.move(os.path.join(DOTFILESENV_PATH, name, os.path.basename(path)), path)
+
+    # remove setting dir
+    os.rmdir(os.path.join(DOTFILESENV_PATH, name))
+
+    del setting[name]
+    put_setting(setting)
+
+    print(f'{GREEN}Success!{END}')
 
 
 @cmd.command(help='link settings')
