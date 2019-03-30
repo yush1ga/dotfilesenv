@@ -42,7 +42,7 @@ def cmd(ctx):
 @cmd.command(help='create a new setting and link')
 @click.argument('name', required=True)
 @click.argument('path', required=True)
-def create(name, path):
+def link(name, path):
     setting = get_setting()
 
     # check whether directory exists
