@@ -80,6 +80,21 @@ def create(name, path):
 
 
 @cmd.command(help='delete a setting')
+# FIXME because built-in method is rewritten
+def list():
+    setting = get_setting()
+    setting_list = []
+    for k in setting:
+        setting_list.append([k, setting[k]])
+
+    setting_list.sort()
+    setting_list = [['Name', 'Path']] + setting_list
+
+    for v in setting_list:
+        print(GREEN+'\t'.join(v)+END)
+
+
+@cmd.command(help='delete a setting')
 @click.argument('name', required=True)
 def delete(name):
     print(f'{GREEN}{name}{END}')
