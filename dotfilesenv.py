@@ -132,7 +132,7 @@ def restore(name):
     sys.stderr.write(f'{RED}Sorry! This API has not been implemented yet!{END}\n')
 
 
-if __name__ == '__main__':
+def main():
     if not os.path.exists(DOTFILESENV_PATH):
         sys.stderr.write(f'{RED}{DOTFILESENV_PATH} directory is not found!\n')
         sys.stderr.write(f'Create it? [y/n]: {END}')
@@ -144,3 +144,7 @@ if __name__ == '__main__':
             sys.stderr.write(f'{RED}bye{END}\n')
             exit(1)
     cmd()
+
+
+if __name__ == '__main__':
+    main()
