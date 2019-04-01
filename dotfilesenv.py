@@ -4,6 +4,7 @@ import json
 import shutil
 import datetime
 
+import prettytable
 import click
 
 from typing import Dict
@@ -85,15 +86,11 @@ def link(name, path):
 # FIXME because built-in method is rewritten
 def list():
     setting = get_setting()
-    setting_list = []
+    table = prettytable.PrettyTable(['Name', 'Path'], sortby='Name')
+    table.align = 'l'
     for k in setting:
-        setting_list.append([k, setting[k]])
-
-    setting_list.sort()
-    setting_list = [['Name', 'Path']] + setting_list
-
-    for v in setting_list:
-        print(GREEN+'\t'.join(v)+END)
+        table.add_row([k, setting[k]])
+    print(table)
 
 
 @cmd.command(help='delete a setting')
