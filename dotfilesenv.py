@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import shutil
+import datetime
 
 import click
 
@@ -61,18 +62,19 @@ def link(name, path):
     shutil.move(path, os.path.join(DOTFILESENV_PATH, name)+'/')
 
     # create symbolic link
+    src_path = os.path.join(
+        DOTFILESENV_PATH,
+        name,
+        os.path.basename(path)
+    )
     os.symlink(
-        os.path.join(
-            DOTFILESENV_PATH,
-            name,
-            os.path.basename(path)
-        ),
+        src_path,
         path,
-        target_is_directory=os.path.isdir(path)
+        target_is_directory=os.path.isdir(src_path)
     )
 
     # save setting info
-    path.replace(os.environ.get('HOME'), '~')
+    path = path.replace(os.environ.get('HOME'), '~')
     setting[name] = path
     put_setting(setting)
 
@@ -128,8 +130,35 @@ def delete(name):
 @cmd.command(help='restore settings from .dotfilesenv')
 @click.argument('name', required=False)
 def restore(name):
-    print(f'{GREEN}{name}{END}')
-    sys.stderr.write(f'{RED}Sorry! This API has not been implemented yet!{END}\n')
+    setting = get_setting()
+
+    if name is not None and setting.get(name) is None:
+        sys.stderr.write(f'{RED}No such setting: {name}{END}')
+        exit(1)
+
+    cache_path = DOTFILESENV_PATH + '.cache/' + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + '/'
+
+    def _restore(p, sp):
+        print(f'Linking {sp} to {p} ...')
+        if os.path.exists(p):
+            if not os.path.exists(cache_path):
+                os.makedirs(cache_path)
+            shutil.move(p, cache_path)
+        os.symlink(sp, p, target_is_directory=os.path.isdir(sp))
+
+    for n in setting:
+        path = setting[n].replace('~', os.environ.get('HOME'))
+        src_path = os.path.join(
+            DOTFILESENV_PATH,
+            n,
+            os.path.basename(path)
+        )
+        if name is None:
+            _restore(path, src_path)
+        elif name == n:
+            _restore(path, src_path)
+
+    print(f'{GREEN}Success!{END}')
 
 
 def main():
