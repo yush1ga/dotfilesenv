@@ -9,6 +9,9 @@ import click
 
 from typing import Dict
 
+# version information
+__version__ = '0.0.3'
+
 # setting information
 DOTFILESENV_PATH = os.path.join(os.environ.get('HOME'), '.dotfilesenv')
 SETTING = 'setting.json'
@@ -33,9 +36,12 @@ def put_setting(setting) -> None:
 
 
 @click.group(invoke_without_command=True)
+@click.option('--version', '-v', is_flag=True, help='show version')
 @click.pass_context
-def cmd(ctx):
-    if ctx.invoked_subcommand is None:
+def cmd(ctx, version):
+    if version:
+        print(f'dotfilesenv version {__version__}')
+    elif ctx.invoked_subcommand is None:
         print(ctx.get_help())
     else:
         ctx.invoked_subcommand
