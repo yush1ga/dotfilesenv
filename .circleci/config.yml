@@ -11,7 +11,7 @@ jobs:
             git config user.email "yush1ga+circleci@users.noreply.github.com"
             git config user.name "yush1ga+circleci"
             python bump_up_version.py
-            git add dotfilesenv.py setup.py
+            git add dotfilesenv/__init__.py
             git commit -m "[ci skip] [auto] bump up version"
             git remote add upstream https://${GITHUB_ACCESS_TOKEN}@github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}
             git push upstream master
