@@ -1,7 +1,7 @@
 import json
 from setuptools import setup
 
-__version__ = '0.0.4'
+__version__ = '0.0.6'
 
 with open('./Pipfile.lock') as f:
     install_requires = []

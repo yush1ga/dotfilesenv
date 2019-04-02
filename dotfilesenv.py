@@ -10,7 +10,7 @@ import click
 from typing import Dict
 
 # version information
-__version__ = '0.0.5'
+__version__ = '0.0.6'
 
 # setting information
 DOTFILESENV_PATH = os.path.join(os.environ.get('HOME'), '.dotfilesenv')
