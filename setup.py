@@ -1,7 +1,7 @@
 import json
-import dotfilesenv
-
 from setuptools import setup
+
+__version__ = '0.0.4'
 
 with open('./Pipfile.lock') as f:
     install_requires = []
@@ -12,7 +12,7 @@ with open('./Pipfile.lock') as f:
 
 setup(
     name='dotfilesenv',
-    version=dotfilesenv.__version__,
+    version=__version__,
     py_modules=['dotfilesenv'],
     install_requires=install_requires,
     entry_points='''
