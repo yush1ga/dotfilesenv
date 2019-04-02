@@ -14,5 +14,4 @@ def bump_up_version(file_path: str):
         f.write(file_content)
 
 
-bump_up_version('dotfilesenv.py')
-bump_up_version('setup.py')
+bump_up_version('dotfilesenv/__init__.py')
