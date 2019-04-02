@@ -130,6 +130,19 @@ def delete(name):
     print(f'{GREEN}Success!{END}')
 
 
+def _restore(setting_name, path, src_path, cache_path):
+    print(f'Linking {src_path} to {path} ...')
+    if os.path.exists(path):
+        if os.path.islink(path):
+            os.remove(path)
+        else:
+            t_cache_path = os.path.join(cache_path, setting_name)
+            os.makedirs(t_cache_path, exist_ok=True)
+            shutil.move(path, t_cache_path)
+
+    os.symlink(src_path, path, target_is_directory=os.path.isdir(src_path))
+
+
 @cmd.command(help='restore settings from .dotfilesenv')
 @click.argument('name', required=False)
 def restore(name):
@@ -141,14 +154,6 @@ def restore(name):
 
     cache_path = DOTFILESENV_PATH + '.cache/' + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + '/'
 
-    def _restore(p, sp):
-        print(f'Linking {sp} to {p} ...')
-        if os.path.exists(p):
-            if not os.path.exists(cache_path):
-                os.makedirs(cache_path)
-            shutil.move(p, cache_path)
-        os.symlink(sp, p, target_is_directory=os.path.isdir(sp))
-
     for n in setting:
         path = setting[n].replace('~', os.environ.get('HOME'))
         src_path = os.path.join(
@@ -156,10 +161,8 @@ def restore(name):
             n,
             os.path.basename(path)
         )
-        if name is None:
-            _restore(path, src_path)
-        elif name == n:
-            _restore(path, src_path)
+        if name is None or name == n:
+            _restore(n, path, src_path, cache_path)
 
     print(f'{GREEN}Success!{END}')
 
