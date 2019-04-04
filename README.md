@@ -17,7 +17,7 @@ $ pip install git+https://github.com/yush1ga/dotfilesenv.git
 ### create symbolic link
 
 ```zsh
-$ dotfilesenv link ~/.vimrc vimrc
+$ dotfilesenv link vimrc ~/.vimrc
 ```
 
 `~/.vimrc` is moved to `~/.dotfilesenv/vimrc` and `~/vimrc` becomes the symbolic link of it.
