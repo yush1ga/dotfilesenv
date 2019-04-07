@@ -150,7 +150,8 @@ def _restore(setting_name, path, src_path, cache_path):
 
 @cmd.command(help='restore settings from .dotfilesenv')
 @click.argument('name', required=False)
-def restore(name):
+@click.option('--command', '-c', is_flag=True, help='ln command for creating symbolic link')
+def restore(name, command):
     setting = get_setting()
 
     if name is not None and setting.get(name) is None:
@@ -167,9 +168,13 @@ def restore(name):
             os.path.basename(path)
         )
         if name is None or name == n:
+            if command:
+                print(f'ln -s {src_path.replace(os.environ.get("HOME"), "~")} {path.replace(os.environ.get("HOME"), "~")}')
+                continue
             _restore(n, path, src_path, cache_path)
 
-    print(f'{GREEN}Success!{END}')
+    if not command:
+        print(f'{GREEN}Success!{END}')
 
 
 @cmd.command(help='git command alias for ~/.dotfilesenv directory')
