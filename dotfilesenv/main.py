@@ -176,6 +176,16 @@ def git(args):
     )
 
 
+@cmd.command(help='view ~/.dotfilesenv by specified command (e.g. dotfilesenv view code -> code ~/.dotfilesenv)')
+@click.argument('cmd', required=True)
+def view(cmd):
+    subprocess.run(
+        f'{cmd} {DOTFILESENV_PATH}',
+        shell=True,
+    )
+
+
+
 def main():
     if not os.path.exists(DOTFILESENV_PATH):
         sys.stderr.write(f'{RED}{DOTFILESENV_PATH} directory is not found!\n')
