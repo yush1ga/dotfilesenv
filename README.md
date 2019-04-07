@@ -36,6 +36,9 @@ $ dotfilesenv delete vimrc
 
 The link is deleted and the source file/directory is moved to former place.
 
+## Auto completions (only zsh)
+
+Use [my zsh-completions](https://github.com/yush1ga/zsh-completions)!
 
 ## Contribution
 
