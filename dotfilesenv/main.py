@@ -3,6 +3,7 @@ import sys
 import json
 import shutil
 import datetime
+import subprocess
 
 import prettytable
 import click
@@ -164,6 +165,15 @@ def restore(name):
             _restore(n, path, src_path, cache_path)
 
     print(f'{GREEN}Success!{END}')
+
+
+@cmd.command(help='git command alias for ~/.dotfilesenv directory')
+@click.argument('args', nargs=-1)
+def git(args):
+    subprocess.run(
+        f'git -C {DOTFILESENV_PATH} {" ".join(args)}',
+        shell=True,
+    )
 
 
 def main():
