@@ -88,7 +88,7 @@ def link(name, path):
     print(f'{GREEN}Success!{END}')
 
 
-@cmd.command(help='delete a setting')
+@cmd.command(help='show settings')
 # FIXME because built-in method is rewritten
 def list():
     setting = get_setting()
@@ -183,7 +183,6 @@ def view(cmd):
         f'{cmd} {DOTFILESENV_PATH}',
         shell=True,
     )
-
 
 
 def main():
