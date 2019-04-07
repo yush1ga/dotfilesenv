@@ -89,9 +89,14 @@ def link(name, path):
 
 
 @cmd.command(help='show settings')
+@click.option('--values', '-v', is_flag=True, help='for _values completion function',)
 # FIXME because built-in method is rewritten
-def list():
+def list(values):
     setting = get_setting()
+    if values:
+        for k in setting:
+            sys.stdout.write(f"{k}[{setting[k]}] ")
+        return
     table = prettytable.PrettyTable(['Name', 'Path'], sortby='Name')
     table.align = 'l'
     for k in setting:
